@@ -57,7 +57,8 @@ app.post('/add-food', function(req,res){
     // if no checkboxes is checked, the it becomes an empty array
 
 
-    //long method
+    // long method
+    // 1st if is for undefined, for values
     // if (!tags) {
     //     tags = [];
     // } else if (Array.isArray(tags) == false)  {
@@ -78,6 +79,32 @@ app.post('/add-food', function(req,res){
         'tags': tags
     })
 })
+
+
+
+app.get('/bmi', function(req,res){
+    res.render('bmi-form')
+})
+app.post('/bmi', function(req,res){
+    let weight = Number(req.body.weight);
+    let height = Number(req.body.height);
+    // set the 'si' to be the default value if req.body.unit is falsely
+    let unit = req.body.unit || "si";
+    let bmi = weight / height ** 2;
+
+    if (unit == 'imperial') {
+        bmi *= 703;
+    }
+
+    console.log(req.body);
+    res.render('bmi-val', {
+        'bmi': bmi
+    })
+});
+
+
+
+
 
 /* 3. START SERVER */
 app.listen(3000, function(){
