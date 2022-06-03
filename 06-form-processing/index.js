@@ -23,6 +23,15 @@ app.use(express.urlencoded({
 }))
 
 
+function processCheckbox(checkboxes) {
+    let values = checkboxes;
+    if (!values) {
+        values = [];
+    } else if (Array.isArray(values) == false)  {
+        values = [values];
+    }
+    return values;
+}
 
 
 /* 2. ROUTES */
@@ -38,9 +47,36 @@ app.get('/add-food', function(req,res){
 app.post('/add-food', function(req,res){
     // the content of the form is in req.body
     console.log(req.body);
-    let fruit = req.body.fruitName;
+    let foodName = req.body.foodName;
+    // let fruit = req.body.fruitName;
     let calories = req.body.calories;
-    res.send('form recieved');
+    let meal = req.body.meal;
+    // let tags = req.body.tags;
+ // if 2 or more checkboxes are checked, we just save it as it is
+    // if only 1 checkbox, turn it in array with just that checkbox's value
+    // if no checkboxes is checked, the it becomes an empty array
+
+
+    //long method
+    // if (!tags) {
+    //     tags = [];
+    // } else if (Array.isArray(tags) == false)  {
+    //         tags = [tags]
+        
+    // }
+
+
+    // tags = tags || [];
+    // tags = Array.isArray(tags) ? tags : [tags];
+    // console.log("tages =", tags);
+    let tags = processCheckbox(req.body.tags);
+    console.log("tags=", tags);
+    res.render('results', {
+        'foodName': foodName,
+        'meal': meal,
+        'calories': calories,
+        'tags': tags
+    })
 })
 
 /* 3. START SERVER */
