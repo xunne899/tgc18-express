@@ -16,9 +16,31 @@ app.use(express.static('public')); // whenever express recieves a request for a 
 waxOn.on(hbs.handlebars);
 waxOn.setLayoutPath('views/layouts');
 
+// !IMPORTANT!
+// setup express to process forms
+app.use(express.urlencoded({
+    'extended': false // use extended: true if you are processing object in objects in a form
+}))
+
+
+
+
 /* 2. ROUTES */
 app.get('/', function(req,res){
     res.send("Hello World");
+})
+
+// the route below to display a form
+app.get('/add-food', function(req,res){
+    res.render('add')
+})
+
+app.post('/add-food', function(req,res){
+    // the content of the form is in req.body
+    console.log(req.body);
+    let fruit = req.body.fruitName;
+    let calories = req.body.calories;
+    res.send('form recieved');
 })
 
 /* 3. START SERVER */
