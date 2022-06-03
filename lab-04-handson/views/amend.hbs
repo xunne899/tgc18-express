@@ -1,0 +1,33 @@
+{{#extends 'base'}}
+
+{{#block "content"}}
+<h1>Admin Page</h1>
+
+
+<h1>Reported Fault</h1>
+<form>
+
+    <label>Title</label>
+<select  name="name">
+  <option value="mr">Mr</option>
+  <option value="mrs">Mrs</option>
+</select>
+
+    <label>Enter your name</label>
+    <input type="text" class="form-control"/>
+      <label>Enter your email address</label>
+    <input type="text" class="form-control"/>
+    <label>Enter your contact no</label>
+    <input type="text" class="form-control"/>
+    <label>Enter Fault Description</label>
+    <input type="text" class="form-control"/>
+
+    <button>Update</button>
+    
+    <button>Delete</button>
+    
+</form>
+
+{{/block}}
+
+{{/extends}}

@@ -1,0 +1,28 @@
+{{#extends 'base'}}
+
+{{#block "content"}}
+<h1>Fault Submission</h1>
+<form>
+<div>
+    <label>Title</label>
+<select  name="name">
+  <option value="mr">Mr</option>
+  <option value="mrs">Mrs</option>
+</select>
+</div>
+    <label>Enter your name</label>
+    <input type="text" class="form-control"/>
+      <label>Enter your email address</label>
+    <input type="text" class="form-control"/>
+    <label>Enter your contact no</label>
+    <input type="text" class="form-control"/>
+    <label>Enter Fault Description</label>
+    <input type="text" class="form-control"/>
+
+    <button>Submit</button>
+    <p>We will contact you shortly</p>
+</form>
+
+{{/block}}
+
+{{/extends}}
