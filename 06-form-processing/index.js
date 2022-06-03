@@ -58,7 +58,7 @@ app.post('/add-food', function(req,res){
 
 
     // long method
-    // 1st if is for undefined, for values
+    // 1st if is for undefined, for no values input
     // if (!tags) {
     //     tags = [];
     // } else if (Array.isArray(tags) == false)  {
