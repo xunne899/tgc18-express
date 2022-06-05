@@ -27,6 +27,7 @@ app.get('/hello/:firstname/:lastname', function(req,res){
     let lname = req.params.lastname
 // render is use to render inside hbs file (html)
 res.render('hello',{
+    // 'firstName' 'lastname' are keys correspond to hello.hbs
     'firstName':fname,
     'lastName':lname
 })

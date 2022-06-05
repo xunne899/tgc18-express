@@ -34,25 +34,91 @@ app.post('/login', function(req,res){
     let haserror = false
 
     if(!email){
-        haserror=true
+        haserror= true
     }
 
-    if ( !email && email.includes('@')) {
+    if (email && email.length < 3) {
         haserror = true;
     }
 
- 
-    if (!password && password.length > 3) {
+    if (email && !email.includes('@')) {
+        haserror = true;
+    }
+
+
+    if(!password){
+        haserror= true
+    }
+    if (password && !password.length > 3) {
         haserror = true;
     }
 
     if (haserror) {
         res.sendStatus(406)
     } else {
-        res.send("Excellent")
+        res.send("Thanks for your Submission")
     }
 })
 
+
+
+app.get('/lost&found',function(req,res){
+    res.render('lost&found')
+})
+
+app.post('/lost&found',function(req,res){
+    let item = req.body.item;
+    let email =req.body.email;
+    let transport = req.body.transport
+    let formbox = []
+    if (req.body.formbox){
+        if(Array.isArray(req.body.formbox)){
+          formbox =req.body.formbox;
+        } else {
+            formbox = [req.body.formbox]
+        }
+    }
+console.log(formbox)
+let haserror = false ;
+
+if(!transport){
+    haserror = true
+}
+
+if(!item){
+    haserror = true
+}
+
+if(item && item.length < 3 || item.length > 200){
+    haserror = true
+}
+
+if(!email){
+    haserror = true
+}
+
+if(email && email.length < 3 || email.length > 200){
+    haserror = true
+}
+
+if(email && !email.includes('@') && !email.includes('.')){
+    haserror = true
+}
+
+ 
+if (formbox && formbox.length> 3 || formbox.length < 1){
+    haserror = true;
+}
+
+if (haserror) {
+    res.sendStatus(406)
+} else {
+    res.send("Thanks for your Submission");
+}
+
+
+
+})
 
 //to start
 app.listen(3000,function(){
