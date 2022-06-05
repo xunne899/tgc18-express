@@ -1,0 +1,28 @@
+{{#extends 'base'}}
+{{#block "content"}}
+    
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Description</th>
+                <th>Food</th>
+            </tr>
+        </thead>
+
+        {{#each sightings}}
+            <tr>
+                <td>{{this._id}}</td>
+                <td>{{this.description}}</td>
+                <td>{{this.food}}</td>
+                <td><a href="/{{this._id}}/update" class="btn btn-primary btn-sm">
+                    Update
+                    </a>
+                </td>
+            </tr>
+        {{/each}}
+        
+    </table>
+
+{{/block}}
+{{/extends}}
