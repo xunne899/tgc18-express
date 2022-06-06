@@ -23,7 +23,7 @@ const BASE_API_URL="https://ckx-restful-api.herokuapp.com"; // --> see note 1
  
 
 app.get("/", async (req, res) => {
-  let response = await axios.get(BASE_API_URL + "/sightings"); // --> note 2
+  let response = await axios.get(BASE_API_URL + "sightings"); // --> note 2
   let sightings = response.data;
   res.render('index', {
     'sightings': sightings // --> note 3
@@ -43,7 +43,7 @@ app.post('/create', async(req,res)=>{
     'datetime': req.body.datetime
   }
 
-  await axios.post(BASE_API_URL + '/sighting', sighting);
+  await axios.post(BASE_API_URL + 'sighting', sighting);
   res.redirect('/')
 })
 // update

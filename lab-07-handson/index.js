@@ -72,12 +72,34 @@ app.get('/movies/create', function(req,res){
     app.post('/movies/create', async function(req,res){
         let title = req.body.title;
         let plot = req.body.plot;
-        await axios.post(BASE_API_URL  + "movie/create",{
+        await axios.post(BASE_API_URL  + "movies/create",{
             'title': title,
             'plot': plot
         })
         res.redirect('/movies');
     })
+
+
+    app.get('/movies/update/:movie_id', async function(req,res){
+        let movieId = req.params.movie_id;
+        let response = await axios.get(BASE_API_URL + 'movie/' + movieId );
+        res.render('update-movies', {
+            'movie':response.data
+        })
+    })
+    
+    app.post('/movies/update/:movie_id', async function(req,res){
+        let movieId = req.params.movie_id;
+        let payload = {
+            // 'id':req.body.id,
+            'title': req.body.title,
+            'plot': req.body.plot
+        }
+        await axios.patch(BASE_API_URL + "movie/" + movieId, payload);
+        res.redirect('/movies')
+    })
+
+
 
 app.listen(3000,function(){
     console.log("server started")
