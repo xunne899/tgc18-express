@@ -11,7 +11,7 @@ app.use(express.static('public'))
 wax.on(hbs.handlebars)
 wax.setLayoutPath('views/layouts')
 
-
+//forms
 app.use(express.urlencoded({
     'extended': false
 }))
