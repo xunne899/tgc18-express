@@ -1,0 +1,17 @@
+{{#extends 'base'}}
+{{#block "content"}}
+
+<div id = "movie-list">
+{{#each movies}}
+  <div class="card" style="width: 18rem;">
+  <div class="card-body">
+    <h5 class="card-title">{{this.title}}</h5>
+    <p class="card-text">{{this.plot}}</p>
+    <a href="#" class="btn btn-primary">Add</a>
+  </div>
+</div>
+{{/each}}
+</div>
+
+{{/block}}
+{{/extends}}
