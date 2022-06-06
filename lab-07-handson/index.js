@@ -28,15 +28,15 @@ app.get('/', function(req,res){
 
 
 app.get('/movies',async function (req,res){
-    try {
+    // try {
     let response = await axios.get(BASE_API_URL + 'movies')
     res.render('index',{
         'movies': response.data
     })
-} catch(e){
-    console.log(e);
-    res.send('Error')
-}
+// } catch(e){
+//     console.log(e);
+//     res.send('Error')
+// }
 })
  
 
@@ -72,7 +72,7 @@ app.get('/movies/create', function(req,res){
     app.post('/movies/create', async function(req,res){
         let title = req.body.title;
         let plot = req.body.plot;
-        await axios.post(BASE_API_URL  + "movies/create",{
+        await axios.post(BASE_API_URL  + "movie/create",{
             'title': title,
             'plot': plot
         })
@@ -99,7 +99,19 @@ app.get('/movies/create', function(req,res){
         res.redirect('/movies')
     })
 
+app.get('/movies/delete/:movie_id', async function(req,res){
+    let response = await axios.get(BASE_API_URL + 'movie/' + req.params.movie_id)
+res.render('delete-movie',{
+    'movie':response.data
+   })
+})
 
+app.post('/movies/delete/:movie_id', async function(req,res){
+    console.log(req.body);
+    let movieId = req.params.movie_id;
+    await axios.delete(BASE_API_URL + 'movie/' + movieId);
+    res.redirect('/movies')
+})
 
 app.listen(3000,function(){
     console.log("server started")

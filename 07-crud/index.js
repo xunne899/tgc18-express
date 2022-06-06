@@ -81,10 +81,13 @@ app.post('/food_sighting/edit/:food_sighting_id',async function(req,res){
     
 
     // 4. send the request
-    let url = BASE_API_URL + 'sighting/' + sightingId;
-    console.log("url ====================>", url);
-    await axios.put(url, payload);
+    // let url = BASE_API_URL + 'sighting/' + sightingId;
+    // console.log("url ====================>", url);
+    // await axios.put(url, payload);
 
+    // res.redirect('/')
+
+    await axios.put( BASE_API_URL + 'sighting/' + sightingId, payload)
     res.redirect('/')
 })
 
