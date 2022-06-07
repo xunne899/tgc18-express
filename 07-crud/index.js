@@ -44,6 +44,7 @@ app.post('/food_sightings/create', async function(req,res){
         'food': req.body.food.split(','),
         'datetime': req.body.datetime
     }
+    // console.log(req.body.food.split(','))
     await axios.post(BASE_API_URL + "sighting", data);
     res.redirect('/');
 })

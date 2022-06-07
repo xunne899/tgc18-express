@@ -8,7 +8,9 @@
       <h5 class="card-title">{{this.id}}</h5>
     <h5 class="card-title">{{this.title}}</h5>
     <p class="card-text">{{this.plot}}</p>
-    <a href="#" class="btn btn-primary">Add</a>
+    <a href="/movies/create" class="btn btn-primary">Add</a>
+    <a href="/movies/update/{{this.id}}" class="btn btn-secondary">Update</a>
+     <a href="/movies/delete/{{this.id}}" class="btn btn-danger">Delete</a>
   </div>
 </div>
 {{/each}}
