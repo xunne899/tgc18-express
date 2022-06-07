@@ -2,13 +2,16 @@
 
 {{#block 'content'}}
 
+<h1>Food Sightings</h1>
+<a href="/food_sightings/create" class="btn btn-primary">Add New Sighting</a>
 <table class="table">
     <thead>
         <tr>
-             <th>ID</th>
+            <th>ID</th>
             <th>Description</th>
             <th>Food</th>
             <th>Date</th>
+            <th></th>
         </tr>
     </thead>
 
@@ -19,7 +22,8 @@
         <td>{{this.food}}</td>
         <td>{{this.datetime}}</td>
         <td>
-            <a href="/food_sighting/edit/{{this._id}}"  class="btn btn-primary btn-sm">Edit</a>
+            <a href="/food_sightings/edit/{{this._id}}"  class="btn btn-primary btn-sm">Edit</a>
+            <a href="/food_sightings/delete/{{this._id}}" class="btn btn-danger btn-sm">Delete</a>
         </td>
 
     </tr>

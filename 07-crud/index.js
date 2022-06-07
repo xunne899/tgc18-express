@@ -49,7 +49,7 @@ app.post('/food_sightings/create', async function(req,res){
 })
 
 
-app.get('/food_sighting/edit/:food_sighting_id', async function(req,res){
+app.get('/food_sightings/edit/:food_sighting_id', async function(req,res){
     // 1. we need to WHICH piece of data to edit hence we needs it unique identifier in the URL
     // and we extract it
     let foodSightingId = req.params.food_sighting_id;
@@ -66,7 +66,7 @@ app.get('/food_sighting/edit/:food_sighting_id', async function(req,res){
 })
 
 
-app.post('/food_sighting/edit/:food_sighting_id',async function(req,res){
+app.post('/food_sightings/edit/:food_sighting_id',async function(req,res){
     let description = req.body.description;
     let food = req.body.food.split(',');
     let datetime = req.body.datetime
@@ -91,7 +91,24 @@ app.post('/food_sighting/edit/:food_sighting_id',async function(req,res){
     res.redirect('/')
 })
 
+app.get('/food_sightings/delete/:food_sighting_id', async function(req,res){
+    let foodSightingId = req.params.food_sighting_id
 
+    let response = await axios.get(BASE_API_URL + 'sighting/'+ foodSightingId)
+    let foodSighting = response.data
+    console.log(foodSighting)
+res.render('confirm_delete',{
+       'foodSighting': foodSighting 
+    })
+})
+
+app.post('/food_sightings/delete/:food_sighting_id', async function(req,res){
+    let foodSightingId = req.params.food_sighting_id
+    await axios.delete(BASE_API_URL + 'sighting/' + foodSightingId )
+    res.redirect('/')
+})
+
+// server to start
 app.listen(3000, function(){
     console.log("server started")
 })
