@@ -6,7 +6,7 @@ const MongoClient = require('mongodb').MongoClient;
 
 // env is the environment  where operating systems stores its variables
 // when we run config  on dotenv all vars are transferred to environment
-const dotenv = require('dotenv').confiq();
+const dotenv = require('dotenv').config();
 console.log(process.env)
 
 const app = express();
