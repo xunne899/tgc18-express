@@ -1,0 +1,163 @@
+const express = require("express");
+const hbs = require("hbs");
+const wax = require("wax-on");
+const MongoUtil = require("./MongoUtil.js");
+const ObjectId = require('mongodb').ObjectId;
+require('dotenv').config();
+
+// use constants to store magic strings 
+const DATABASE = "tgc18-animal-shelter";
+const PETS = "pets";
+
+
+async function main() {
+  /* 1. SETUP EXPRESS */
+  let app = express();
+
+  // 1B. SETUP VIEW ENGINE
+  app.set("view engine", "hbs");
+
+  // 1C. SETUP STATIC FOLDER
+  app.use(express.static("public"));
+
+  // 1D. SETUP WAX ON (FOR TEMPLATE INHERITANCE)
+  wax.on(hbs.handlebars);
+  wax.setLayoutPath("./views/layouts");
+
+  // 1E. ENABLE FORMS
+  app.use(express.urlencoded({ extended: false }));
+
+  const db = await MongoUtil.connect(process.env.MONGO_URI, DATABASE);
+  console.log("connected to DB");
+  
+  app.get('/', async function(req,res){
+      let pets = await db.collection(PETS).find({}).toArray();
+      res.render('all-pets',{
+        // if the key name is the same as the variable name, we can just have the variable name    
+        //pets
+        'pets': pets
+      })
+  })
+
+  app.get('/create', async function(req,res){
+      res.render('add-animals.hbs');
+  })
+
+  app.post('/create', async function(req,res){
+      let newDocument = {
+          'name': req.body.name,
+          'age': req.body.age,
+          'breed': req.body.breed,
+          'problems': req.body.problems.split(','),
+          'tags': req.body.tags.split(',')
+      }
+
+      await db.collection(PETS).insertOne(newDocument);
+      res.redirect('/')
+  })
+
+
+ // get pets through id 
+app.get('/:petid', async (req,res)=> {
+    // let db = MongoUtil.getDB();
+    let pets = await db.collection(PETS).findOne({
+        '_id': ObjectId(req.params.petid)
+    });
+    
+    res.render('selected-pets', {
+        pets
+    })  
+  })
+  
+
+  app.post('/:petid', async (req,res)=> {
+    // let db = MongoUtil.getDB();
+    let pets = await db.collection(PETS).findOne({
+        '_id': ObjectId(req.params.petid)
+    });
+    
+    res.render('selected-pets', {
+        pets
+    })  
+  })
+  
+
+// get edit food
+app.get('/:petid/edit', async (req,res)=> {
+    // let db = MongoUtil.getDB();
+    let pets = await db.collection(PETS).findOne({
+        '_id': ObjectId(req.params.petid)
+    });
+    
+    res.render('edit-pets', {
+        pets
+    })  
+  })
+  
+  
+  // post edit food
+  app.post("/:petid/edit", async (req,res)=>{
+    // let db = MongoUtil.getDB();
+    let { name, age, breed, problems, tags } = req.body;
+  
+    // if (!Array.isArray(tags)) {
+    //     tags = [tags];
+    // }
+  
+    let foodid = req.params.petid;
+    db.collection(PETS).updateOne({
+        _id:ObjectId(foodid)
+    }, 
+    {
+        '$set' : {
+            name, age, breed, problems, tags
+        }        
+    })
+  
+    res.redirect('/');
+  })
+  
+
+
+
+  // post edit food
+//   app.post("/food/:foodid/edit", async (req,res)=>{
+//     let db = MongoUtil.getDB();
+//     let { foodName, calories, tags } = req.body;
+  
+//     if (!Array.isArray(tags)) {
+//         tags = [tags];
+//     }
+  
+//     let foodid = req.params.foodid;
+//     db.collection('food').updateOne({
+//         _id:ObjectId(foodid)
+//     }, 
+//     {
+//         '$set' : {
+//           foodName, calories, tags
+//         }        
+//     })
+  
+//     res.redirect('/food');
+//   })
+
+
+
+
+
+
+
+
+  app.listen(3000, function(){
+    console.log("Server has started")
+});
+
+}
+
+main();
+
+
+
+
+

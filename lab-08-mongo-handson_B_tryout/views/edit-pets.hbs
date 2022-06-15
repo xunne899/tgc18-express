@@ -1,0 +1,37 @@
+{{#extends 'base'}}
+{{#block "content"}}
+
+<form method="POST">
+    <div>
+        <label class="form-label">Name:</label>
+        <input type="text" class="form-control" name="name" value="{{pets.name}}"/>
+    </div>
+    <div>
+        <label class="form-label">Age</label>
+        <input type="text" class="form-control" name="age" value="{{pets.age}}"/>
+    </div>
+     <div>
+        <label class="form-label">Breed:</label>
+        <input type="text" class="form-control" name="breed" value="{{pets.breed}}"/>
+    </div>
+
+    <div>
+        <label class="form-label">Problems:</label>
+        <input type="text" name="problems" class="problems" value="{{pets.problems}}"/>
+    </div>
+    <div>
+        <label class="form-label">Tags:</label>
+        <input type="text" name="tags" class="tags" value="{{pets.tags}}"/>
+    </div>
+  
+  
+       <div>
+        <input type="submit" class="btn btn-primary" value="Update Pet"/>
+        <a href="/" class="btn btn-secondary">Cancel</a>
+       </div>
+      
+</form>
+
+{{/block}}
+{{/extends}}
+

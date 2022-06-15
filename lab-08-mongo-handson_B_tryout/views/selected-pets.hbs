@@ -1,0 +1,21 @@
+{{#extends 'base'}}
+{{#block "content"}}
+
+<div class="card" style="width: 18rem;">
+  <div class="card-body">
+    <h5 class="card-title">{{pets.name}}</h5>
+    <ul>
+        <li>ID:{{pets._id}}</li>
+        <li>Age: {{pets.age}}</li>
+        <li>Breed: {{pets.breed}}</li>
+        <li>Problems: {{pets.problems}}</li>
+        <li>Tags: {{pets.tags}}</li>
+    </ul>
+    <a href="/{{pets._id}}/edit" class="btn btn-primary">Edit</a>
+<a href="/create" class="btn btn-success">Add</a>
+  </div>
+</div>
+
+
+{{/block}}
+{{/extends}}
