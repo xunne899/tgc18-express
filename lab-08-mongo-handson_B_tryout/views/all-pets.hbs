@@ -14,10 +14,12 @@
         <li>Age: {{this.age}}</li>
         <li>Breed: {{this.breed}}</li>
         <li>Problems: {{this.problems}}</li>
+        <li>HDB Approved: {{this.hdb_approved}}</li>
         <li>Tags: {{this.tags}}</li>
     </ul>
     <a href="/{{this._id}}/edit" class="btn btn-primary">Edit</a>
     <a href="/create" class="btn btn-success">Add</a>
+    <a href="/delete-animals/{{this._id}}" class="btn btn-danger">Delete</a>
   </div>
 </div>
 {{/each}}

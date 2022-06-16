@@ -19,9 +19,35 @@
         <label class="form-label">Problems:</label>
         <input type="text" name="problems" class="problems" value="{{pets.problems}}"/>
     </div>
-    <div>
-        <label class="form-label">Tags:</label>
-        <input type="text" name="tags" class="tags" value="{{pets.tags}}"/>
+  
+        <div>
+        <label>HDB Approved</label>
+        
+        <input type="radio" value="true" name="hdb_approved" class="form-check-input"{{#eq pets.hdb_approved "true"}}checked{{/eq}}/>
+        <label class="form-check-label">True</label>
+
+        <input type="radio" value="false" name="hdb_approved" class="form-check-input" {{#eq pets.hdb_approved "false"}}checked{{/eq}}/>
+        <label class="form-check-label">False</label>
+    </div>
+
+  
+  <div>
+        <label>Tags</label>
+   <input name="tags" class="form-check-input" type="checkbox" value="housebroken"/>
+                <label>HouseBroken</label>
+            
+            
+                <input name="tags" class="form-check-input" type="checkbox" value="vaccinated"{{#inArray pets.tags "vaccinated"}}checked{{/inArray}}/>
+                <label>Vaccinated</label>
+            
+            
+                <input name="tags" class="form-check-input" type="checkbox" value="chipped"{{#inArray pets.tags "chipped"}}checked{{/inArray}}/>
+                <label>Chipped</label>
+            
+           
+            
+                <input name="tags" class="form-check-input" type="checkbox" value="fixed" {{#inArray pets.tags "fixed"}}checked{{/inArray}}/>
+                <label>Fixed</label>
     </div>
   
   

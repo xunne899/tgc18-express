@@ -3,6 +3,9 @@ const hbs = require("hbs");
 const wax = require("wax-on");
 const MongoUtil = require("./MongoUtil.js");
 const ObjectId = require('mongodb').ObjectId;
+const helpers = require('handlebars-helpers')({
+    'handlebars':hbs.handlebars
+})
 require('dotenv').config();
 
 // use constants to store magic strings 
@@ -49,7 +52,8 @@ async function main() {
           'age': req.body.age,
           'breed': req.body.breed,
           'problems': req.body.problems.split(','),
-          'tags': req.body.tags.split(',')
+          'hdb_approved':req.body.hdb_approved,
+          'tags': req.body.tags
       }
 
       await db.collection(PETS).insertOne(newDocument);
@@ -98,24 +102,44 @@ app.get('/:petid/edit', async (req,res)=> {
   // post edit food
   app.post("/:petid/edit", async (req,res)=>{
     // let db = MongoUtil.getDB();
-    let { name, age, breed, problems, tags } = req.body;
+    let { name, age, breed, problems,hdb_approved, tags } = req.body;
   
     // if (!Array.isArray(tags)) {
     //     tags = [tags];
     // }
   
-    let foodid = req.params.petid;
+    let id = req.params.petid;
     db.collection(PETS).updateOne({
-        _id:ObjectId(foodid)
+        _id:ObjectId(id)
     }, 
     {
         '$set' : {
-            name, age, breed, problems, tags
+            name, age, breed, problems, hdb_approved,tags
         }        
     })
   
     res.redirect('/');
   })
+
+
+
+  app.get('/delete-animals/:petid', async function(req,res){
+    let id = req.params.petid;
+    let  pets = await db.collection(PETS).findOne({
+        '_id': ObjectId(id)
+    })
+    res.render('delete-animals',{
+        'pets': pets
+    })
+})
+
+app.post('/delete-animals/:petid',async function(req,res){
+    let id = req.params.petid;
+    await db.collection(PETS).deleteOne({
+    '_id':ObjectId(id)
+})
+res.redirect('/')
+})
   
 
 

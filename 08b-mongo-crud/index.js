@@ -49,7 +49,7 @@ function getCheckboxValues(rawTags) {
     return tags;
 }
 
-const db = null
+// const db = null
 
 async function main() {
 
@@ -60,7 +60,7 @@ async function getFoodRecordById(id) {
     });
     return foodRecord;
 }
-  
+    //  db = await MongoUtil.connect(MONGO_URI, "tgc18_cico");
     const db = await MongoUtil.connect(MONGO_URI, "tgc18_cico");
     app.get('/test', async function(req,res) {
         // we use the .toArray() to convert the results to an array of JavaScript objects
