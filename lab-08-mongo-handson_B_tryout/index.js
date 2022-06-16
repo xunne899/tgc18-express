@@ -104,6 +104,12 @@ app.get('/:petid/edit', async (req,res)=> {
     // let db = MongoUtil.getDB();
     let { name, age, breed, problems,hdb_approved, tags } = req.body;
   
+    // if (tags=null) {
+    //     tags = [];
+    // }
+    // if (!tags) {
+    //     tags = [];
+    // }
     // if (!Array.isArray(tags)) {
     //     tags = [tags];
     // }

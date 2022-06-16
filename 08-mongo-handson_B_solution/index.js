@@ -134,8 +134,7 @@ async function main() {
         tags = req.body.tags
       } else if (req.body.tags) {
         tags = [ req.body.tags ]
-      }
-
+      } 
       let newDocument = {
           'name': req.body.name,
           'age': req.body.age,
