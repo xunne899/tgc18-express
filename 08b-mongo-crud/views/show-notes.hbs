@@ -1,13 +1,16 @@
 {{#extends 'base'}}
 
 {{#block 'content'}}
-<h1>{{foodRecord.food}} <a href="/food/{{foodRecord._id}}/notes/add" class="btn btn-primary">Add New</a></h1>
+<h1>{{foodRecord.food}} <a href="/food/{{foodRecord._id}}/notes/add" class="btn btn-success">Add New</a></h1>
 {{#each foodRecord.notes}}
 <div class="card">
     <div class="card-body">
         {{this.content}}
         <div>
-            <a href="/food/{{../foodRecord._id}}/{{this._id}}/update" class="btn btn-primary btn-sm">Update</a>
+            
+            <a href="/food/{{../foodRecord._id}}/notes/{{this._id}}/update" class="btn btn-primary btn-sm">Update</a>
+            <a href="/food/{{../foodRecord._id}}/notes/{{this._id}}/delete" class="btn btn-danger btn-sm">Delete</a>
+            <a href="/" class="btn btn-secondary btn-sm">Cancel</a>
         </div>
     </div>
 </div>

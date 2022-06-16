@@ -5,11 +5,11 @@
 <form method="POST">
     <div>
         <label>Content of note:</label>
-        <textarea class="form-control" name="content"></textarea>
+        <textarea class="form-control" name="content">{{note.content}}</textarea>
     </div>
     <div>
         <input type="submit" class="btn btn-primary mt-3"/>
-       <a href="/food/{{../foodRecord._id}}/notes" class="btn btn-secondary mt-3">Cancel</a>
+        <a href="/food/{{../foodRecord._id}}/notes" class="btn btn-secondary mt-3">Cancel</a>
     </div>
 
 </form>
