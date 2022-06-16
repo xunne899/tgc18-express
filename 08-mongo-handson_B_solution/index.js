@@ -55,6 +55,8 @@ async function main() {
       res.redirect('/')
   })
 
+
+  app.get('/update/:id', async function(req,res))
   app.listen(3000, function(){
     console.log("Server has started")
 });
