@@ -144,6 +144,62 @@ app.post('/delete-food/:id',async function(req,res){
 res.redirect('/')
 })
 
+app.get('/food/:foodid/notes/add', async function(req,res){
+    let foodRecord = await db.collection('food_records').findOne({
+        '_id': ObjectId(req.params.foodid)
+    },{
+        // projection is to select a few fields from the document
+        'projection':{
+            'food': 1
+        }
+    })
+ 
+    res.render('add-note',{
+        'foodRecord':foodRecord
+    })
+})
+
+app.post('/food/:foodid/notes/add',async function(req,res){
+    let response = await db.collection('food_records').updateOne({
+        '_id': ObjectId(req.params.foodid)
+    },{
+        '$push':{
+            'notes':{
+                '_id':ObjectId(),
+                'content':req.body.content
+            }
+        }
+    })
+    res.redirect('/food/'+req.params.foodid+'/notes')
+
+})
+
+app.get('/food/:foodid/notes', async function(req,res){
+    let foodRecord = await getFoodRecordById(req.params.foodid);
+    res.render('show-notes',{
+        'foodRecord': foodRecord
+    })
+})
+
+
+
+app.get('/food/:foodid/notes/:noteid/update', async function(req,res){
+    let foodRecord = await db.collection('food_records').findOne({
+        '_id': ObjectId(req.params.foodid),
+    },{
+        'projection':{
+            'notes':{
+                '$elemMatch':{
+                    '_id': ObjectId(req.params.noteid)
+                }
+            }
+        }
+    });
+    let noteToEdit = foodRecord.notes[0];
+    res.render('edit-note',{
+        'content': noteToEdit.content
+    })
+})
 }
 main();
 
