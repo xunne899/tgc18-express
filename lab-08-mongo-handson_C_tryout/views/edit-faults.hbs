@@ -1,0 +1,69 @@
+{{#extends 'base'}}
+{{#block "content"}}
+
+
+<form method="POST">
+       <div>
+        <label>Title:</label>
+        <input type="text" name="title" class="form-control" value="{{faults.title}}"/>
+    </div>
+    <div>
+        <label class="form-label">Location:</label>
+        <input type="text" class="form-control" name="location" value="{{faults.location}}"/>
+    </div>     
+     <div>
+        <label class="form-label">Tags</label>
+          
+                <input name="tags" class="form-check-input" type="checkbox" value="urgent"{{#inArray faults.tags "vaccinated"}}checked{{/inArray}}/>
+                <label>Urgent</label>
+            
+                <input name="tags" class="form-check-input" type="checkbox" value="dangerous"{{#inArray faults.tags "dangerous"}}checked{{/inArray}}/>
+                <label>Dangerous</label>
+            
+                <input name="tags" class="form-check-input" type="checkbox" value="equipment_fault"{{#inArray faults.tags "equipment_fault"}}checked{{/inArray}}/>
+                <label>Equipment Fault</label>
+            
+                <input name="tags" class="form-check-input" type="checkbox" value="maintenance_fault"{{#inArray faults.tags "maintenance_fault"}}checked{{/inArray}}/>
+                <label>Maintenance Fault</label>
+
+                <input name="tags" class="form-check-input" type="checkbox" value="infrastructure_fault"{{#inArray faults.tags "infrastructure_fault"}}checked{{/inArray}}/>
+                <label>Infrastructure Fault</label>    
+    </div>
+    <div>
+        <label>Block</label>
+   
+        <input type="radio" value="304" name="block" class="form-check-input" {{#eq faults.block "304"}}checked{{/eq}}/>
+        <label class="form-check-label">304</label>
+
+        <input type="radio" value="305" name="block" class="form-check-input" {{#eq faults.block "305"}}checked{{/eq}}/>
+        <label class="form-check-label">305</label>
+
+        <input type="radio" value="306" name="block" class="form-check-input" {{#eq faults.block "306"}}checked{{/eq}} />
+        <label class="form-check-label">306</label>
+
+        <input type="radio" value="307" name="block" class="form-check-input" {{#eq faults.block "307"}}checked{{/eq}}/>
+        <label class="form-check-label">307</label>
+
+        <input type="radio" value="307A" name="block" class="form-check-input" {{#eq faults.block "307A"}}checked{{/eq}}/>
+        <label class="form-check-label">307A</label>
+
+    </div>
+     <div>
+        <label>Name:</label>
+        <input type="text" name="name" class="form-control" value="{{faults.name}}"/>
+    </div>
+    <div>
+        <label>Email:</label>
+        <input type="text" name="email" class="form-control" value="{{faults.email}}"/>
+    </div>
+  
+       <div>
+        <input type="submit" class="btn btn-primary" value="Update Faults"/>
+        <a href="/" class="btn btn-secondary">Cancel</a>
+       </div>
+      
+</form>
+
+{{/block}}
+{{/extends}}
+
