@@ -30,6 +30,21 @@ async function main() {
   // 1E. ENABLE FORMS
   app.use(express.urlencoded({ extended: false }));
 
+  
+  
+  
+  function getCheckboxValues(rawTags) {
+    let tags = [];
+    if (Array.isArray(rawTags)) {
+      tags = rawTags;
+    } else if (rawTags) {
+      tags = [ rawTags ]
+    }
+    return tags;
+  }
+  
+  
+  
   const db = await MongoUtil.connect(process.env.MONGO_URI, DATABASE);
   console.log("connected to DB");
   
@@ -47,13 +62,23 @@ async function main() {
   })
 
   app.post('/create', async function(req,res){
+
+    // let tags = [];
+    // if (Array.isArray(req.body.tags)) {
+    //   tags = req.body.tags
+    // } else if (req.body.tags) {
+    //   tags = [ req.body.tags ]
+    // } 
+  
+    let tags = getCheckboxValues(req.body.tags)
+ 
       let newDocument = {
           'name': req.body.name,
           'age': req.body.age,
           'breed': req.body.breed,
           'problems': req.body.problems.split(','),
-          'hdb_approved':req.body.hdb_approved,
-          'tags': req.body.tags
+          'hdb_approved':req.body.hdb_approved == 'true',
+          'tags': tags
       }
 
       await db.collection(PETS).insertOne(newDocument);
@@ -102,7 +127,17 @@ app.get('/:petid/edit', async (req,res)=> {
   // post edit food
   app.post("/:petid/edit", async (req,res)=>{
     // let db = MongoUtil.getDB();
-    let { name, age, breed, problems,hdb_approved, tags } = req.body;
+
+    let id = req.params.petid;
+    // let { name, age, breed, problems,hdb_approved, tags } = req.body;
+    let newDocument = {
+        'name': req.body.name,
+        'age': req.body.age,
+        'breed': req.body.breed,
+        'problems': req.body.problems.split(','),
+        'hdb_approved':req.body.hdb_approved == 'true',
+        'tags': getCheckboxValues(req.body.tags)
+    }
   
     // if (tags=null) {
     //     tags = [];
@@ -114,14 +149,18 @@ app.get('/:petid/edit', async (req,res)=> {
     //     tags = [tags];
     // }
   
-    let id = req.params.petid;
-    db.collection(PETS).updateOne({
+
+    await db.collection(PETS).updateOne({
         _id:ObjectId(id)
     }, 
     {
-        '$set' : {
-            name, age, breed, problems, hdb_approved,tags
-        }        
+        // '$set' : {
+        //     name, age, breed, problems, hdb_approved,tags
+        // }    
+        
+        '$set': newDocument
+
+
     })
   
     res.redirect('/');
@@ -179,7 +218,7 @@ res.redirect('/')
 
 
 
-  app.listen(3000, function(){
+  app.listen(3001, function(){
     console.log("Server has started")
 });
 

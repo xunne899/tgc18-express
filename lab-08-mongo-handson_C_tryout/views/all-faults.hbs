@@ -1,0 +1,32 @@
+{{#extends 'base'}}
+
+{{#block "content"}}
+
+{{#each faults}}
+
+
+<div class="card" style="width: 18rem;">
+  <div class="card-body">
+    
+    <h5 class="card-title">{{this.title}}</h5>
+    <ul>
+        <li>ID:{{this._id}}</li>
+        <li>Location: {{this.location}}</li>
+        <li>Tags: {{this.tags}}</li>
+        <li>Block: {{this.block}}</li>
+        <li>Name: {{this.name}}</li>
+        <li>Email: {{this.email}}</li>
+    </ul>
+    <a href="/{{this._id}}/edit" class="btn btn-primary">Edit</a>
+    <a href="/create" class="btn btn-success">Add</a>
+    <a href="/delete-animals/{{this._id}}" class="btn btn-danger">Delete</a>
+  </div>
+</div>
+{{/each}}
+
+{{/block}}
+
+{{/extends}}
+
+
+

@@ -1,0 +1,64 @@
+{{#extends 'base'}}
+{{#block "content"}}
+<form method="POST">
+    <div>
+        <label>Title:</label>
+        <input type="text" name="title" class="form-control"/>
+    </div>
+    <div>
+        <label>Location:</label>
+        <input type="text" name="location" class="form-control"/>
+    </div>
+    <div>
+        <label class="form-label">Tags</label>
+          
+                <input name="tags" class="form-check-input" type="checkbox" value="urgent"/>
+                <label>Urgent</label>
+            
+                <input name="tags" class="form-check-input" type="checkbox" value="dangerous"/>
+                <label>Dangerous</label>
+            
+                <input name="tags" class="form-check-input" type="checkbox" value="equipment_fault"/>
+                <label>Equipment Fault</label>
+            
+                <input name="tags" class="form-check-input" type="checkbox" value="maintenance_fault" />
+                <label>Maintenance Fault</label>
+
+                <input name="tags" class="form-check-input" type="checkbox" value="infrastructure_fault" />
+                <label>Infrastructure Fault</label>
+            
+    </div>
+      <div>
+        <label>Block</label>
+   
+        <input type="radio" value="304" name="block" class="form-check-input" checked/>
+        <label class="form-check-label">304</label>
+
+        <input type="radio" value="305" name="block" class="form-check-input" />
+        <label class="form-check-label">305</label>
+
+        <input type="radio" value="306" name="block" class="form-check-input" />
+        <label class="form-check-label">306</label>
+
+        <input type="radio" value="307" name="block" class="form-check-input" />
+        <label class="form-check-label">307</label>
+
+        <input type="radio" value="307A" name="block" class="form-check-input" />
+        <label class="form-check-label">307A</label>
+
+    </div>
+    <div>
+        <label>Name:</label>
+        <input type="text" name="name" class="form-control"/>
+    </div>
+    <div>
+        <label>Email:</label>
+        <input type="text" name="email" class="form-control"/>
+    </div>
+
+    <input type="submit" class="btn btn-primary mt-3"/>
+    <a href="/" class="btn btn-secondary mt-3">Cancel</a>
+
+</form>
+{{/block}}
+{{/extends}}
