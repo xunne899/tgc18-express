@@ -204,16 +204,19 @@ app.get('/faults/:fauid/comment/:comid/update', async function(req,res){
 
     let faults = await db.collection(FAULTS).findOne({
         '_id': ObjectId(req.params.fauid),
-        'comments._id': ObjectId(req.params.comid)
+        'comments._id': ObjectId(req.params.comid),
     },{
         'projection':{
+            'title':1,
             'comments.$': 1
         }
     })
 
     let commentToEdit = faults.comments[0];
     res.render('edit-comment',{
+        'title': faults.title,
         'content': commentToEdit.content
+        
     })
 })
 
@@ -227,7 +230,7 @@ app.post('/faults/:fauid/comment/:comid/update', async function(req,res){
             'comments.$.content': newContent
         }
     })
-    res.redirect(`/faults/${req.params.id}/comment`);
+    res.redirect(`/faults/${req.params.fauid}/comment`);
 });
 
 app.get('/faults/:fauid/comment/:comid/delete', async function(req,res){

@@ -1,8 +1,9 @@
 {{#extends 'base'}}
 
 {{#block "content"}}
-<h1>Adding new comment to {{faults.title}}</h1>
 <form method="POST">
+<h1 >Adding new comment to {{title}}</h1>
+
     <div>
         <label>Comments:</label>
         <textarea class="form-control" name="content">{{content}}</textarea>
