@@ -13,7 +13,18 @@ const FAULTS = "faults"
 
 
 async function main(){
+
+
+
     let app = express()
+
+
+    async function getFaultRecordById(id) {
+        let faultRecord = await db.collection(FAULTS).findOne({
+            '_id': ObjectId(id)
+        });
+        return faultRecord;
+    }
 
 
 app.set("view engine", "hbs");
@@ -95,7 +106,7 @@ app.post('/:id/edit',async(req,res)=>{
  let tags = checboxValues(req.body.tags)
  let newinfo = {
     'title': req.body.title,
-    'location':req.body.location.split(','),
+    'location':req.body.location,
     'tags': tags,
     'block':req.body.block,
     'name':req.body.name,
@@ -134,9 +145,122 @@ res.redirect('/')
 })
 
 
+
+app.get('/faults/:id/comment/add', async function(req,res){
+ let faults = await db.collection(FAULTS).findOne({
+    '_id':ObjectId(req.params.id)
+ },{
+    'projection':{
+        'title':1
+    }
+ }) 
+
+ res.render('add-comment',{
+    faults
+ })
+})
+
+app.post('/faults/:id/comment/add',async function(req,res){
+    await db.collection(FAULTS).updateOne({
+        '_id':ObjectId(req.params.id)
+    },{
+        '$push':{
+            'comments':{
+                '_id':ObjectId(),
+                'content' :req.body.content
+            }
+        }
+    })
+
+    res.redirect('/faults/'+req.params.id+'/comment')
+})
+
+
+
+app.get('/faults/:id/comment', async function(req,res){
+    let faults = await getFaultRecordById(req.params.id);
+   res.render('show-comment',{
+    faults
+   })
+})
+
+
+app.get('/faults/:fauid/comment/:comid/update', async function(req,res){
+    // let foodRecord = await db.collection('food_records').findOne({
+    //     '_id': ObjectId(req.params.foodid),
+    // },{
+    //     'projection':{
+    //         'notes':{
+    //             '$elemMatch':{
+    //                 '_id': ObjectId(req.params.noteid)
+    //             }
+    //         }
+    //     }
+    // });
+
+    let faults = await db.collection(FAULTS).findOne({
+        '_id': ObjectId(req.params.fauid),
+        'comments._id': ObjectId(req.params.comid)
+    },{
+        'projection':{
+            'comments.$': 1
+        }
+    })
+
+    let commentToEdit = faults.comments[0];
+    res.render('edit-comment',{
+        'content': commentToEdit.content
+    })
+})
+
+app.post('/faults/:fauid/comment/:comid/update', async function(req,res){
+    let newContent = req.body.content;
+    await db.collection(FAULTS).updateOne({
+        '_id':ObjectId(req.params.fauid),
+        'comments._id':ObjectId(req.params.comid)
+    },{
+        '$set':{
+            'comments.$.content': newContent
+        }
+    })
+    res.redirect(`/faults/${req.params.id}/comment`);
+});
+
+app.get('/faults/:fauid/comment/:comid/delete', async function(req,res){
+    let faults = await db.collection(FAULTS).findOne({
+        '_id': ObjectId(req.params.fauid),
+        'comments._id': ObjectId(req.params.comid)
+    },{
+        'projection':{
+            'comments.$': 1
+        }
+    })
+
+    let commentToDelete= faults.comments[0];
+    res.render('delete-comment',{
+        'comments': commentToDelete 
+    })
+})
+
+app.post('/faults/:fauid/comment/:comid/delete', async function(req,res){
+    await db.collection(FAULTS).updateOne({
+        '_id':ObjectId(req.params.fauid)
+    },{
+        '$pull':{
+            'comments':{
+                '_id': ObjectId(req.params.comid)
+            }
+        }
+    })
+    res.redirect('/faults/'+req.params.fauid+'/comment')
+})
+
+
+
 app.listen(3001, function(){
     console.log("Server has started")
 });
-}
 
-main()
+
+}
+main();
