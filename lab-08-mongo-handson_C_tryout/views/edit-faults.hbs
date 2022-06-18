@@ -56,8 +56,26 @@
         <label>Email:</label>
         <input type="text" name="email" class="form-control" value="{{faults.email}}"/>
     </div>
-  
+    <div>
+        <label>Resolved:</label>
+
+        <input type="radio" value="true" name="resolved" class="form-check-input" {{#eq faults.resolved "true"}}checked{{/eq}}/>
+        <label class="form-check-label">True</label>
+
+        <input type="radio" value="false" name="resolved" class="form-check-input" {{#eq faults.resolved "false"}}checked{{/eq}}/>
+        <label class="form-check-label">False</label>
+    </div>
        <div>
+        <label>Follow Up:</label>
+
+        <input type="radio" value="true" name="follow_up" class="form-check-input" {{#eq faults.follow_up "true"}}checked{{/eq}}/>
+        <label class="form-check-label">True</label>
+
+        <input type="radio" value="false" name="follow_up" class="form-check-input" {{#eq faults.follow_up "false"}}checked{{/eq}}/>
+        <label class="form-check-label">False</label>
+    </div>
+
+       <div style="line-height:4.5em">
         <input type="submit" class="btn btn-primary" value="Update Faults"/>
         <a href="/" class="btn btn-secondary">Cancel</a>
        </div>

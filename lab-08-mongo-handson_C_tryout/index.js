@@ -71,11 +71,13 @@ app.post('/create', async function(req,res){
   
     let newinfo = {
         'title': req.body.title,
-        'location':req.body.location.split(','),
+        'location':req.body.location,
         'tags': tags,
         'block':req.body.block,
         'name':req.body.name,
-        'email':req.body.email
+        'email':req.body.email,
+        'resolved':req.body.resolved,
+        'follow_up':req.body.follow_up
     }
 
     await db.collection(FAULTS).insertOne(newinfo);
@@ -110,7 +112,9 @@ app.post('/:id/edit',async(req,res)=>{
     'tags': tags,
     'block':req.body.block,
     'name':req.body.name,
-    'email':req.body.email
+    'email':req.body.email,
+    'resolved':req.body.resolved,
+    'follow_up':req.body.follow_up
 }
 
 await db.collection(FAULTS).updateOne({
