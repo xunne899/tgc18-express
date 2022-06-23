@@ -34,8 +34,6 @@ app.post('/food_sightings',async function(req,res){
         'food': food,
         'datetime': datetime,
     })
-
-
     res.status(201)
     res.send(result)
 })
@@ -85,6 +83,7 @@ app.delete('/food_sightings/:id', async function(req,res){
     res.status(200);
     res.json({'status':'ok'});
 })
+
 
 }
 
