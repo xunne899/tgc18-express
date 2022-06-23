@@ -1,0 +1,164 @@
+// const express = require('express')
+const express = require ('express')
+require ('dotenv').config()
+
+const MongoUtil = require('./MongoUtil') // "./"" its same directory as our index.js
+const MONGO_URI = process.env.MONGO_URI;
+const app = express();
+const cors = require('cors');
+const { ObjectId } = require('mongodb');
+
+//enable cross site resource sharing
+app.use(cors())
+// Restful API aspects data sent to endpoint 
+// in json format
+// all received data to converted to json
+app.use(express.json());
+
+async function main(){
+
+const db =  await MongoUtil.connect(MONGO_URI,"tgc18_food_sightings");
+console.log("Connected to database");
+app.get('/',function(req,res){
+    res.send("hello world")
+})
+
+// post cannot be testes via browser
+app.post('/food_sightings',async function(req,res){
+    let description = req.body.description
+    let food = req.body.food
+    // when new Date() called with out argument , then it will automatically be current date and time
+    let datetime = req.body.datetime? new Date(req.body.datetime): new Date();
+    let result = await db.collection('sightings').insertOne({
+        'description': description,
+        'food': food,
+        'datetime': datetime,
+    })
+    res.status(201)
+    res.send(result)
+})
+app.get('/food_sightings',async function(req,res){
+    let criteria = {};
+    if(req.query.description){
+        criteria['description']={
+            '$regex':req.query.description,'$options':'i'
+        }
+    }
+if(req.query.food){
+    criteria['food']= {
+        '$in':[req.query.food]
+    }
+}
+     let results = await db.collection('sightings').find(criteria)
+    res.status(200)
+    //toArray is async
+    res.send( await results.toArray())
+})
+
+//update 
+// patch vs put 
+app.put('/food_sightings/:id',async function(req,res){
+    let description = req.body.description;
+    let food = req.body.food;
+    let datetime = req.body.date ? new Date(req.body.date) : new Date();
+    let results = await db.collection('sightings').updateOne({
+        '_id' : ObjectId(req.params.id)
+    },{
+        '$set':{
+            'description': description,
+            'food':food,
+            'datetime': datetime
+        }
+    })
+    res.status(200);
+        res.json(results);
+})
+
+// delete
+app.delete('/food_sightings/:id', async function(req,res){
+    let results = await db.collection('sightings').deleteOne({
+        '_id':ObjectId(req.params.id)
+    })
+
+    res.status(200);
+    res.json({'status':'ok'});
+})
+//username
+app.post('/users', async function(req,res){
+    let db = MongoUtil.getDB();
+    let result = await db.collection('users').insertOne({
+        'email': req.body.email,
+        'password': req.body.password          
+    })
+    res.status(201);
+    res.json({
+        'message':'New user account'
+    })
+})
+
+//
+const generateAccessToken = (id, email) => {
+    return jwt.sign({
+        'user_id': id,
+        'email': email
+    }, process.env.TOKEN_SECRET, {
+        expiresIn: "1h"
+    });
+}
+
+//
+app.post('/login', async function(req,res){
+    let db = MongoUtil.getDB();
+    let user = await db.collection('users').findOne({
+        'email': req.body.email,
+        'password': req.body.password
+    })
+    if (user) {
+        let accessToken = generateAccessToken(user._id, user.email);
+        res.send({
+            accessToken
+        })
+    } else {
+        res.send({
+            'error':'Authentication error'
+        })
+    }
+})
+
+
+
+const checkIfAuthenticatedJWT = (req, res, next) => {
+    const authHeader = req.headers.authorization;
+
+    if (authHeader) {
+        const token = authHeader.split(' ')[1];
+
+        jwt.verify(token, process.env.TOKEN_SECRET, (err, user) => {
+            if (err) {
+                return res.sendStatus(403);
+            }
+
+            req.user = user;
+            next();
+        });
+    } else {
+        res.sendStatus(401);
+    }
+};
+
+app.get('/profile', checkIfAuthenticatedJWT, async function(req,res){
+    res.send(req.user);
+})
+
+
+
+
+
+}
+
+main();
+
+
+app.listen(3000, function(){
+    console.log("Server has started")
+})
