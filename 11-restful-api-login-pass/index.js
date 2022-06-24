@@ -26,26 +26,35 @@ const dummyMiddleware = function(req,res,next){
 app.use(dummyMiddleware)
 
 
-const checkIfAuthenticatedWithJWT = function(req,res,next) {
-    // check if there is an authorization header
+const checkIfAuthenticated = function(req, res, next) {
     let authorizationHeaders = req.headers.authorization;
-    if (!authorizationHeaders) {
-        res.sendStatus(401);
-        return;
-    }
+        console.log('Authorization headers=', authorizationHeaders); // -> will return 'Bearer <accessToken>'
 
-    console.log('Authorization headers=', authorizationHeaders);
-    let token = authorizationHeaders.split("")[1];
-    jwt.verify(token,process.env.TOKEN_SECRET,function(err,tokenData){
-        if(err){
-            res.sendStatus(401); //res.status + res.send
-            return // to end function
-        }else{
-            req.user = tokenData;
+        // check if there is an authorization header
+        if (!authorizationHeaders) {
+            res.sendStatus(401); // res.status() + res.send() combined
+            return;
         }
-       
-})
-next()
+
+        // Get the token
+        let token = authorizationHeaders.split(' ')[1]; // -> to extract only the access token and not the 'bearer' part
+
+        // Ask jwt to verify the token
+        // -> after verification, the token data will be passed to the function specified in the third argument
+        jwt.verify(token, process.env.TOKEN_SECRET, function(err, tokenData) {
+            // If there is error
+            // -> err will be null or undefined if there are no errors
+            if (err) {
+                res.sendStatus(401); // res.status() + res.send() combined
+                return;
+            }
+            else {
+                req.user = tokenData;
+            }
+        })
+
+        // IMPORTANT PART OF MIDDLEWARE -> CALL THE NEXT FUNCTION
+        next();
 }
 
 async function main(){
@@ -59,7 +68,7 @@ app.get('/',function(req,res){
 // post cannot be testes via browser
 //protect this route
 //
-app.post('/food_sightings', checkIfAuthenticatedWithJWT, async function(req,res){
+app.post('/food_sightings', checkIfAuthenticated, async function(req,res){
 
 
 
@@ -98,7 +107,7 @@ if(req.query.food){
 
 //update 
 // patch vs put 
-app.put('/food_sightings/:id', checkIfAuthenticatedWithJWT, async function(req,res){
+app.put('/food_sightings/:id', checkIfAuthenticated, async function(req,res){
     let description = req.body.description;
     let food = req.body.food;
     let datetime = req.body.date ? new Date(req.body.date) : new Date();
@@ -116,7 +125,7 @@ app.put('/food_sightings/:id', checkIfAuthenticatedWithJWT, async function(req,r
 })
 
 // delete
-app.delete('/food_sightings/:id', checkIfAuthenticatedWithJWT , async function(req,res){
+app.delete('/food_sightings/:id', checkIfAuthenticated , async function(req,res){
     let results = await db.collection('sightings').deleteOne({
         '_id':ObjectId(req.params.id)
     })
