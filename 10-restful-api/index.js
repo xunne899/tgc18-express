@@ -33,6 +33,7 @@ app.post('/food_sightings',async function(req,res){
         'description': description,
         'food': food,
         'datetime': datetime,
+     
     })
     res.status(201)
     res.send(result)
